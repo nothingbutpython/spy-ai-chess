@@ -233,15 +233,19 @@ def zobrist_hash(board):
     return hash_val
 
 def negamax(board, depth, alpha, beta, best_move=None):
+    # Generate the zobrist hash for the board position that we are evaluating
     hash_val = zobrist_hash(board)
+    # Evaluate the position at search end
     if depth == 0:
         return evaluate_position(board, best_move)
+    # Return value for transpositions if we searched to the requisite depth
     if hash_val in transposition_table:
         stored_depth, stored_val, stored_move = transposition_table[hash_val]
         if stored_depth >= depth:
             global total_transpositions
             total_transpositions += 1
             return stored_val, stored_move
+    # Negamax search
     for move in board.legal_moves:
         board.push(move)
         if board.is_checkmate():
@@ -262,7 +266,7 @@ def negamax(board, depth, alpha, beta, best_move=None):
 
 
 def evaluate_position(board, best_move):
-    # TODO: add endgame checkmating algorithm
+    # Eva
     weight = endgame_weight(board)
     score = material_difference(board)
     score += piece_activation(board)
@@ -275,6 +279,7 @@ def evaluate_position(board, best_move):
     return score, best_move
 
 def attempt_push_move(board):
+    # Try to push a move. If the input is switch or resign, then do those actions and ask for another move.
     move = input("Say 'resign' to resign.\nSay 'switch' to switch between letters and unicode characters.\nEnter your move in SAN notation:\n")
     if str(move) == "switch":
         global unicode_ascii_switch
