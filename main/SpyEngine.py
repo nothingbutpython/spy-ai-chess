@@ -305,7 +305,7 @@ while not board.is_game_over():
     os.system('cls' if os.name == 'nt' else 'clear')
     playing_side = board.turn
     ai_move = ''
-    with chess.polyglot.open_reader("Titans.bin") as reader:
+    with chess.polyglot.open_reader("polyglot/Titans.bin") as reader:
         if entries := list(reader.find_all(board)):
             first_n_entries = entries[:4]
             ai_move = random.choice(first_n_entries).move
